@@ -25,34 +25,17 @@ ini_set('display_errors', true);
  */
 
 require_once dirname(__DIR__) . '/class/Note.php';
-
 require_once dirname(__DIR__) . '/inc/tools.php';
-$notesJSON = loadJson();
-
-
-// require dirname(__DIR__) . '/inc/add.php';
-
-$notesJSONArray = [];
-
-if ($notesJSON == null) {
-} else {
-    foreach ($notesJSON as $item) {
-        if (!isset($item['title'], $item['content'])) continue;
-        $notesJSONArray[] = new Note(
-            $item['title'],
-            $item['content']
-        );
-    }
-    
-}
-
-//unset($_POST);
-
 require_once dirname(__DIR__) . '/inc/add.php';
+
+$pathJSON = dirname(__DIR__) . '/data/notes.json';
+$notesJSONArray = loadJSON($pathJSON);
+
+
 if ( isset($_POST['add'] )) {
     // Fühg Note(Obj) im Array hinzu
     $notesJSONArray[] = addNewNote();
-    saveJSON($notesJSONArray);
+    saveJSON($notesJSONArray, $pathJSON);
 }
 
 ?>

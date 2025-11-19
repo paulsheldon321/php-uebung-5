@@ -1,13 +1,26 @@
 <?php
 
-function loadJSON() {
+function loadJSON($path) {
     // JSON lesen und decodieren
-    $path = '../data/notes.json';
+    
     $decodedJSON = is_file($path) ? json_decode(file_get_contents($path), true) : [];
-    return $decodedJSON;
+    $arrayJSON = [];
+    if ($decodedJSON == null) {
+        return [];
+    } else {
+        foreach ($decodedJSON as $item) {
+            if (!isset($item['title'], $item['content'])) continue;
+            $arrayJSON[] = new Note(
+                $item['title'],
+                $item['content']
+            );
+        }        
+        return $arrayJSON;
+    }
+
 }
 
-function saveJSON($data) {
+function saveJSON($data, $path) {
 
     $jsonArray = []; 
 
@@ -18,7 +31,7 @@ function saveJSON($data) {
             'content' => $d->getContent()
         ];
     }
-    file_put_contents('../data/notes.json',
+    file_put_contents($path,
     json_encode($jsonArray, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
   );
 }
