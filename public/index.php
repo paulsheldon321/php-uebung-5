@@ -57,27 +57,28 @@ $notes = is_file($path) ? json_decode((string)file_get_contents($path), true) : 
                 <button type="submit" name="button">Notiz Hinzufügen</button><br><br>
             </form>
         </section>
-        <section>
-            <!-- Formular zum Löschen der entsprechenden Notiz (<input type="hidden">) -->
-            <form action="../inc/delete.php" method="Post">
-                <h2>Entsprechenden Notiz</h2>
-                <input type="hidden" name="">
-                <button type="submit">Löschen</button>
 
-            </form>
-        </section>
         <!-- Ausgabe der Notizen (wenn leeres Array: Info ausgeben) -->
         <?php if (empty($notes)): ?>
             <p>Keine Notizen vorhandeln.</p>
         <?php else: ?>
-            <?php foreach ($notes as $n): ?>
-                <article class="post">
-                    <h2><?= htmlspecialchars($n['title']) ?></h2>
-                    <p><?= nl2br(htmlspecialchars($n['content'])) ?></p>
-                </article>
-            <?php endforeach; ?>
-        <?php endif; ?>
+            <section>
+                <!-- Formular zum Löschen der entsprechenden Notiz (<input type="hidden">) -->
 
+                <h2>Entsprechenden Notiz</h2>
+                <input type="hidden" name="">
+                <?php foreach ($notes as $n): ?>
+                    <article class="post">
+                        <h2><?= htmlspecialchars($n->getTitle()) ?></h2>
+                        <p><?= nl2br(htmlspecialchars($n->getContent())) ?></p>
+                        <form action="../inc/delete.php" method="Post">
+                            <input type="hidden" name="">
+                            <button type="submit">Löschen</button>
+                    </article>
+                <?php endforeach; ?>
+            <?php endif; ?>
+            </form>
+            </section>
 
 
     </main>
