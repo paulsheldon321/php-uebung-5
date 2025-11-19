@@ -49,6 +49,8 @@ $notes = is_file($path) ? json_decode((string)file_get_contents($path), true) : 
                     <p><?= htmlspecialchars($note['content']) ?></p>
                 </article>
             <?php endforeach; ?>
+        <?php else: ?>
+            <p>Keine Notizen</p>
         <?php endif; ?>
     </main>
 </body>
