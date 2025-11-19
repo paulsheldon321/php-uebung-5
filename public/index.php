@@ -44,24 +44,27 @@ $notes = is_file($path) ? json_decode((string)file_get_contents($path), true) : 
     <main class="container">
         <!-- TODO -->
         <!-- Formular zum Hinzufügen neuer Notizen -->
+        <section>
+            <form action="../inc/add.php" method="Post">
+                <h2>Neuer Notizen erstellen</h2>
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title">
 
-        <form action="../inc/add.php" method="Post">
-            <label for="title">Title</label>
-            <input type="text" name="title" id="title">
+                <label for="content">Inhalt</label>
+                <textarea name="content" id="content" rows="5"></textarea>
 
-            <label for="content">Inhalt</label>
-            <textarea name="content" id="content" rows="5"></textarea>
+                <button type="submit" name="button">Notiz Hinzufügen</button><br><br>
+            </form>
+        </section>
+        <section>
+            <!-- Formular zum Löschen der entsprechenden Notiz (<input type="hidden">) -->
+            <form action="../inc/delete.php" method="Post">
+                <h2>Entsprechenden Notiz</h2>
+                <input type="hidden" name="">
+                <button type="submit">Löschen</button>
 
-            <button type="submit" name="button">Notiz Hinzufügen</button>
-        </form>
-
-        <!-- Formular zum Löschen der entsprechenden Notiz (<input type="hidden">) -->
-        <form action="../inc/delete.php" method="Post">
-            <input type="hidden" name="">
-            <button type="submit">Löschen</button>
-
-        </form>
-
+            </form>
+        </section>
         <!-- Ausgabe der Notizen (wenn leeres Array: Info ausgeben) -->
         <?php if (empty($notes)): ?>
             <p>Keine Notizen vorhandeln.</p>
