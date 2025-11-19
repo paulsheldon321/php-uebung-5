@@ -26,6 +26,9 @@ $notes = is_file($path) ? json_decode((string)file_get_contents($path), true) : 
  * 8) class/Note.php
  *    - Klasse für Notizen
  */
+$path = __DIR__ . '/../data/notes.json';
+$notes = is_file($path) ? json_decode((string)file_get_contents($path), true) : [];
+
 ?>
 <!doctype html>
 <html lang="de">
