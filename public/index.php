@@ -43,6 +43,8 @@ $notes = is_file($path) ? json_decode((string)file_get_contents($path), true) : 
     </header>
     <main class="container">
         <!-- TODO -->
+        <!-- Formular zum Hinzufügen neuer Notizen -->
+
         <form action="../inc/add.php" method="Post">
             <label for="title">Title</label>
             <input type="text" name="title" id="title">
@@ -52,9 +54,14 @@ $notes = is_file($path) ? json_decode((string)file_get_contents($path), true) : 
 
             <button type="submit" name="button">Notiz Hinzufügen</button>
         </form>
+
+        <!-- Formular zum Löschen der entsprechenden Notiz (<input type="hidden">) -->
         <form action="../inc/delete.php" method="Post">
+            <input type="hidden" name="">
+            <button type="submit">Löschen</button>
 
         </form>
+
         <!-- Ausgabe der Notizen (wenn leeres Array: Info ausgeben) -->
         <?php if (empty($notes)): ?>
             <p>Keine Notizen vorhandeln.</p>
@@ -66,9 +73,9 @@ $notes = is_file($path) ? json_decode((string)file_get_contents($path), true) : 
                 </article>
             <?php endforeach; ?>
         <?php endif; ?>
-        <!-- Formular zum Hinzufügen neuer Notizen -->
 
-        <!-- Formular zum Löschen der entsprechenden Notiz (<input type="hidden">) -->
+
+
     </main>
 
 
