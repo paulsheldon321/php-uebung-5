@@ -12,11 +12,11 @@ ini_set('display_errors', true);
  * 🟡 3) Implementiere add.php und delete.php (POST) Hinweis: verstecktes Formularfeld.
  * 🟡 4) index.php (Grundgerüst wie hier in dieser Datei):
  * ✅ - Ausgabe der Notizen (wenn leeres Array: Info ausgeben)
- *    - Formular zum Hinzufügen neuer Notizen
+ * ✅ - Formular zum Hinzufügen neuer Notizen
  *    - Formular zum Löschen der entsprechenden Notiz (<input type="hidden">)
  * 🟡 5) inc/tools.php
  *    - Funktionen zum Laden, Speichern und Laden der Notizen
- * 🟡 6) add.php
+ * ✅ 6) add.php
  *    - Funktionalität zum Hinzufügen neuer Notizen
  * 🟡 7) delete.php
  *    - Funtionalität zum Löschen einer Notiz
@@ -25,24 +25,34 @@ ini_set('display_errors', true);
  */
 
 require_once dirname(__DIR__) . '/class/Note.php';
+
 require_once dirname(__DIR__) . '/inc/tools.php';
+$notesJSON = loadJson();
+
+
 // require dirname(__DIR__) . '/inc/add.php';
+
+$notesJSONArray = [];
+
+if ($notesJSON == null) {
+} else {
+    foreach ($notesJSON as $item) {
+        if (!isset($item['title'], $item['content'])) continue;
+        $notesJSONArray[] = new Note(
+            $item['title'],
+            $item['content']
+        );
+    }
+    
+}
 
 //unset($_POST);
 
-// Prüfe, ob diese Datei über ein Formular aufgerufen wurde
-if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
-  echo '<pre>', print_r( $_POST ), '</pre>';
-  $newNote = new Note($_POST['title'], $_POST['content']);
-  //$newNote->setTitle();
-  //$newNote->setContent();
-  
-  $notesJSONObject[] = $newNote;
-
-  file_put_contents(
-    '../data/notes.json',
-    json_encode($notesJSONObject, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)
-);
+require_once dirname(__DIR__) . '/inc/add.php';
+if ( isset($_POST['add'] )) {
+    // Fühg Note(Obj) im Array hinzu
+    $notesJSONArray[] = addNewNote();
+    saveJSON($notesJSONArray);
 }
 
 ?>
@@ -63,30 +73,37 @@ if ( $_SERVER['REQUEST_METHOD'] === 'POST' ) {
     <main class="container">
         <!-- TODO --> 
 
-        <?php if($notesJSONObject === []): ?>
+        <?php if($notesJSONArray === []): ?>
             <?php
                 echo "<div class=\"alert\"> Keine Notiz - Bitte Info ausgeben </div>";
             ?>
         <?php else: ?>
-            <?php foreach($notesJSONObject as $n): ?>
+            <?php foreach($notesJSONArray as $a => $n): ?>
                 <article class="post">
-                <h2><?= htmlspecialchars($n->getTitle()) ?></h2>
-                <p><?= nl2br(htmlspecialchars($n->getContent())) ?></p>
+                    <h2><?= $n->getID().". ". htmlspecialchars($n->getTitle()) ?></h2>
+                    <p><?= nl2br(htmlspecialchars($n->getContent())) ?></p>
                 </article>
             <?php endforeach; ?>
         <?php endif; ?>
-        
 
-        <form action="<?= $_SERVER['SCRIPT_NAME'] ?>" method="post" class="card">
-            <div style = "display: flex;">
-                 <button type="submit" style = "margin: 0.5em; width: 50%;" onclick="toggleOpen()">Hinzufügen</button>
-                 <button type="submit" style = "margin: 0.5em; width: 50%;">Löschen</button> 
-            </div> 
-              <label type="hidden" for="title">Title</label>
-              <input type="text" name="title">
-              <label type="hidden" for="content">Content</label>
-              <input type="text" name="content">
-        </form>
+
+        <div class="card">
+            <form action="<?= $_SERVER['SCRIPT_NAME'] ?>" method="post">
+                <label for="title">Title</label>
+                <input name="title">
+                <label  for="content">Content</label>
+                <input type="text" name="content">
+                <button type="submit" name="add" style="margin: 1em 0 1em 0;" >Hinzufügen</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <form action="<?= $_SERVER['SCRIPT_NAME'] ?>" method="post">    
+                <label for="deleteID">Notiz-Nummer</label>
+                <input type="text" name="deleteID">
+                <button type="submit" name="delete" style="margin: 1em 0 1em 0;">Löschen</button> 
+            </form>
+        </div> 
         
         
     </main>
