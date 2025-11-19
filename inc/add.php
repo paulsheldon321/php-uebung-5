@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-$notes = [
-    ['title' => 'Test', 'content' => 'Hallo JSON!']
-];
+function addNewNote(){
+    $newNote = new Note($_POST['title'], $_POST['content']);
+    return $newNote;    
+}
 
-file_put_contents('../data/notes.json', json_encode($notes, JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE));
-echo 'notes.json geschrieben' ;
+  
