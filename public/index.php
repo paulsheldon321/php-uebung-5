@@ -4,8 +4,6 @@ declare(strict_types=1);
 error_reporting(E_ALL);
 ini_set('display_errors', true);
 
-$path = __DIR__ . 'inc/tools.php';
-$notes = is_file($path) ? json_decode((string)file_get_contents($path), true) : [];
 /**
  * Aufgabe:
  * 0) Einer von Euch legt ein öffentliches Git-Repo an von wo aus Ihr alle pushen und pullen könnt (optional aber hilfreich)
