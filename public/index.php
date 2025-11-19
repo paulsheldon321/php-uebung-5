@@ -27,14 +27,21 @@ ini_set('display_errors', true);
 require_once dirname(__DIR__) . '/class/Note.php';
 require_once dirname(__DIR__) . '/inc/tools.php';
 require_once dirname(__DIR__) . '/inc/add.php';
+require_once dirname(__DIR__) . '/inc/delete.php';
 
 $pathJSON = dirname(__DIR__) . '/data/notes.json';
 $notesJSONArray = loadJSON($pathJSON);
 
+echo print_r($_POST);
 
 if ( isset($_POST['add'] )) {
     // Fühg Note(Obj) im Array hinzu
     $notesJSONArray[] = addNewNote();
+    saveJSON($notesJSONArray, $pathJSON);
+}
+
+if ( isset($_POST['delete'] )) {
+    $notesJSONArray = deleteNote($notesJSONArray, $_POST['deleteID']);
     saveJSON($notesJSONArray, $pathJSON);
 }
 

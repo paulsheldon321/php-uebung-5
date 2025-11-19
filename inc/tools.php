@@ -24,7 +24,7 @@ function saveJSON($data, $path) {
 
     $jsonArray = []; 
 
-    // Attribute aus Objekt ausnehmen, und im Array als String schreiben
+    // Attribute aus Objekt rausnehmen, und in Array als String schreiben
     foreach ($data as $d) {
         $jsonArray[] = [
             'title'   => $d->getTitle(),
