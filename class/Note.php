@@ -2,11 +2,18 @@
 declare(strict_types=1);
 
 class Note {
-    /* Construcor Property Promotion */
-    public function __construct(
-        private string $title, 
-        private string $content ) {
-        // 
+    private static int $nextId = 1;
+    private int $id;
+    private string $title;
+    private string $content;
+
+    public function __construct(string $title, string $content)
+    {
+        $this->id = self::$nextId;
+        self::$nextId++;
+
+        $this->title = $title;
+        $this->content = $content;
     }
 
     public function getTitle() {
@@ -17,11 +24,8 @@ class Note {
         return $this->content;
     }
 
-    public function setTitle($newTitle) {
-        return $this->title = $newTitle;
+    public function getID() {
+        return $this->id;
     }
 
-    public function setContent() {
-        return $this->content = $setContent;
-    }
 }
