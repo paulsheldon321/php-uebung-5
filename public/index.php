@@ -22,8 +22,13 @@ ini_set('display_errors', true);
  * 8) class/Note.php
  *    - Klasse für Notizen
  */
+
+// JSON lesen und decodieren
 $path = __DIR__ . '/data/notes.json';
-$notes = is_file($path) ? json_decode((string)file_get_contents($path), true) : [];
+$notesJSON = is_file($path)
+    ? json_decode(file_get_contents($path), true)
+    : [];
+
 
 ?>
 <!doctype html>
