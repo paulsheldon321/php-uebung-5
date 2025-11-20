@@ -35,14 +35,16 @@ $notesJSONArray = loadJSON($pathJSON);
 echo print_r($_POST);
 
 if ( isset($_POST['add'] )) {
-    // Fühg Note(Obj) im Array hinzu
+    // Fügt Note(Obj) im Array hinzu
     $notesJSONArray[] = addNewNote();
     saveJSON($notesJSONArray, $pathJSON);
+    header("Location: index.php"); // vermeidet die Wiederholung der Eingabe nachdem der Browser neu geladet wird.
 }
 
 if ( isset($_POST['delete'] )) {
     $notesJSONArray = deleteNote($notesJSONArray, $_POST['deleteID']);
     saveJSON($notesJSONArray, $pathJSON);
+    header("Location: index.php"); // vermeidet die Wiederholung der Eingabe nachdem der Browser neu geladet wird.
 }
 
 ?>
