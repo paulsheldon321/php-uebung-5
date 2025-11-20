@@ -4,24 +4,27 @@ declare(strict_types=1);
 
 class Note
 {
-    public function __construct(private string $title, private string $content) {}
+    public function __construct(
+        private string $title,
+        private string $content
+    ) {}
 
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
 
-    public function setTitle($title)
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    public function setContent($content)
+    public function setContent(string $content): void
     {
         $this->content = $content;
     }

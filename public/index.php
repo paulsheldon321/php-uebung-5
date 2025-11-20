@@ -3,28 +3,16 @@
 declare(strict_types=1);
 error_reporting(E_ALL);
 ini_set('display_errors', true);
-/**
- * Aufgabe:
- * 0) Einer von Euch legt ein öffentliches Git-Repo an von wo aus Ihr alle pushen und pullen könnt (optional aber hilfreich)
- * 1) Erstelle die Struktur: data/, inc/, class/, public/
- * 2) Lade Notizen aus data/notes.json und zeige sie in public/index.php.
- * 3) Implementiere add.php und delete.php (POST) Hinweis: verstecktes Formularfeld.
- * 4) index.php (Grundgerüst wie hier in dieser Datei):
- *    - Ausgabe der Notizen (wenn leeres Array: Info ausgeben)
- *    - Formular zum Hinzufügen neuer Notizen
- *    - Formular zum Löschen der entsprechenden Notiz (<input type="hidden">)
- * 5) inc/tools.php
- *    - Funktionen zum Laden, Speichern und Laden der Notizen
- * 6) add.php
- *    - Funktionalität zum Hinzufügen neuer Notizen
- * 7) delete.php
- *    - Funtionalität zum Löschen einer Notiz
- * 8) class/Note.php
- *    - Klasse für Notizen
- */
-$path = __DIR__ . '/data/notes.json';
-$notes = is_file($path) ? json_decode((string)file_get_contents($path), true) : [];
 
+include_once __DIR__ . '/../class/Note.php';
+
+$path = __DIR__ . '/../data/notes.json';
+$data = is_file($path) ? json_decode((string)file_get_contents($path), true) : [];
+
+$notes = [];
+foreach ($data as $item) {
+    $notes[] = new Note($item['title'], $item['content']);
+}
 ?>
 <!doctype html>
 <html lang="de">
@@ -41,16 +29,37 @@ $notes = is_file($path) ? json_decode((string)file_get_contents($path), true) : 
         <h1>Übung 5 – Notiz-Manager Light</h1>
     </header>
     <main class="container">
-        <!-- TODO -->
-        <?php if ($notes): ?>
-            <?php foreach ($notes as $note): ?>
-                <article class="post">
-                    <h2><?= htmlspecialchars($note['title']) ?></h2>
-                    <p><?= htmlspecialchars($note['content']) ?></p>
-                </article>
-            <?php endforeach; ?>
+        <!-- Formular zum Hinzufügen neuer Notizen -->
+        <section>
+            <form action="../inc/add.php" method="post">
+                <h2>Neue Notiz erstellen</h2>
+                <label for="title">Titel</label>
+                <input type="text" name="title" id="title" required>
+                <label for="content">Inhalt</label>
+                <textarea name="content" id="content" rows="5" required></textarea>
+                <button type="submit">Notiz hinzufügen</button>
+            </form>
+        </section>
+        <hr>
+        <!-- Ausgabe der Notizen -->
+        <?php if (empty($notes)): ?>
+            <p>Keine Notizen vorhanden.</p>
+
         <?php else: ?>
-            <p>Keine Notizen</p>
+            <section>
+                <h2>Gespeicherte Notizen</h2>
+                <?php foreach ($notes as $i => $n): ?>
+                    <article class="post">
+                        <h2><?= htmlspecialchars($n->getTitle()) ?></h2>
+                        <p><?= nl2br(htmlspecialchars($n->getContent())) ?></p>
+                        <!-- Löschen-Formular -->
+                        <form action="../inc/delete.php" method="post">
+                            <input type="hidden" name="id" value="<?= $i ?>">
+                            <button type="submit">Löschen</button>
+                        </form>
+                    </article>
+                <?php endforeach; ?>
+            </section>
         <?php endif; ?>
     </main>
 </body>
